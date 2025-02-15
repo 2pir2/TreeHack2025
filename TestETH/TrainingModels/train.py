@@ -1,11 +1,10 @@
 import pandas as pd
 from sklearn.model_selection import train_test_split
-from sklearn.ensemble import RandomForestRegressor
-from sklearn.metrics import mean_absolute_error
-import joblib
+from trainRandomForest import randomforest
+from trainxgboost import xgboost
 
 # Load ETH price data (Only selecting timestamp, open, and close)
-csv_filename = r"/Users/hanxu/Desktop/TreeHack/TreeHack2025/ETH.csv"
+csv_filename = r"/Users/haipengzhang/Downloads/TreeHack2025/ETH.csv"
 df = pd.read_csv(csv_filename, usecols=["timestamp", "open", "close"])
 
 # Convert timestamp to datetime
@@ -32,23 +31,5 @@ y = df["future_close"]
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
 # Train Random Forest Model for Close Price Prediction
-model = RandomForestRegressor(n_estimators=100, random_state=42)
-model.fit(X_train, y_train)
-
-# Make predictions
-y_pred = model.predict(X_test)
-
-# Evaluate Model
-mae = mean_absolute_error(y_test, y_pred)
-
-# Save Model
-joblib.dump(model, "eth_price_model.pkl")
-print("Model saved as eth_price_model.pkl")
-
-# Save Model Performance
-performance_data = pd.DataFrame({"Actual_Close": y_test, "Predicted_Close": y_pred})
-performance_csv = "eth_price_model_performance.csv"
-performance_data.to_csv(performance_csv, index=False)
-
-# Output Mean Absolute Error
-print(f"Mean Absolute Error (Close Price): {mae}")
+randomforest(X_train, y_train, X_test, y_test)
+xgboost(X_train, y_train, X_test, y_test)
