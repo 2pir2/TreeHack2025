@@ -2,30 +2,30 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import mean_absolute_error
+import joblib
 
 # Load ETH price data (Only selecting timestamp, open, and close)
-csv_filename = "eth_price_data.csv"
+csv_filename = r"/Users/hanxu/Desktop/TreeHack/TreeHack2025/ETH.csv"
 df = pd.read_csv(csv_filename, usecols=["timestamp", "open", "close"])
 
 # Convert timestamp to datetime
 df["timestamp"] = pd.to_datetime(df["timestamp"])
 
 # Feature Engineering: Add Moving Averages
-df["SMA_10"] = df["close"].rolling(window=20).mean()
-df["SMA_20"] = df["close"].rolling(window=30).mean()
+df["SMA_10"] = df["close"].rolling(window=10).mean()
+df["SMA_50"] = df["close"].rolling(window=50).mean()  # Fixed SMA_50 window
 
 # Drop NaN values from rolling calculations
-df = df.dropna()
+df = df.dropna().copy()
 
-print(df)
 # Target variable: Predict next close price
 df["future_close"] = df["close"].shift(-1)
-print(df)
+
 # Drop NaN values after shifting
 df = df.dropna()
 
 # Define features (X) and target (y)
-X = df[["open", "close", "SMA_10", "SMA_20"]]
+X = df[["open", "close", "SMA_10", "SMA_50"]]
 y = df["future_close"]
 
 # Split into training (80%) and testing (20%)
@@ -40,6 +40,10 @@ y_pred = model.predict(X_test)
 
 # Evaluate Model
 mae = mean_absolute_error(y_test, y_pred)
+
+# Save Model
+joblib.dump(model, "eth_price_model.pkl")
+print("Model saved as eth_price_model.pkl")
 
 # Save Model Performance
 performance_data = pd.DataFrame({"Actual_Close": y_test, "Predicted_Close": y_pred})
