@@ -1,12 +1,19 @@
-from ccxtread import add
+from ccxtread import data_retrieval_price
 
 import pandas as pd
 import numpy as np
 
-time = "2025-01-26 03:40:00"  # timestamp format
+time = "2023-10-01 03:40:00"  # timestamp format
 
 # data retrieval function (time) => data format in csv format
-fun_data_price = ''
+def fun_data_price(time):
+    start_time = pd.to_datetime(time) - pd.Timedelta(days=10)
+    date = time.split(" ")[0]
+    start_time = start_time.strftime("%Y-%m-%d %H:%M:%S")
+    start_date = start_time.split(" ")[0]
+    df = data_retrieval_price(start_date, date)
+    return df
+
 fun_data_news = ''
 
 # data preprocessing function (data format in csv format) => predicted value (float)
@@ -31,7 +38,17 @@ def current(time):
     return df.loc[closest_index, "close"]
 
 def decision(time):
-    return predict(time, weight_price, weight_news) > current(time)
+    predicted = predict(time, weight_price, weight_news)
+    current_price = current(time)
+    if predicted > current_price:
+        return 1
+    elif predicted == current_price:
+        return 0
+    else:
+        return -1
+
 
 print(current(time))
 print(pd.to_datetime(time) - pd.Timedelta(days=10))
+
+print(fun_data_price(time).head())
