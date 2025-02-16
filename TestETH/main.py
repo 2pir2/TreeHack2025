@@ -1,7 +1,8 @@
-from ccxtread import data_retrieval_price
-
+from ccxtread import data_retrieval_price # data retrieval for price data
+from test import send_eth, w3connect # deployment
 import pandas as pd
 import numpy as np
+from datetime import datetime
 
 time = "2023-10-01 03:40:00"  # timestamp format
 
@@ -47,8 +48,28 @@ def decision(time):
     else:
         return -1
 
+def do_trx(action):
+    if action is not None:
+        if action == 1:
+            print("🟢 Buying ETH...")
+        elif action == -1:
+            print("🔴 Selling ETH...")
+        try:
+            w3connect()
+            send_eth(action)
+        except Exception as e:
+            print(f"❌ Error sending ETH: {e}")
 
-print(current(time))
-print(pd.to_datetime(time) - pd.Timedelta(days=10))
+def check_do_trx():
+    current_time = datetime.now()
+    current_time = current_time.strftime("%Y-%m-%d %H:%M:%S")
+    time = "2023-10-01 03:40:00"  # timestamp format
+    do_trx(decision(time))
 
-print(fun_data_price(time).head())
+
+# print(current(time))
+# print(pd.to_datetime(time) - pd.Timedelta(days=10))
+
+# print(fun_data_price(time).head())
+
+# check_do_trx()
