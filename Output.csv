@@ -1,14 +1,12 @@
-
-```csv
-"News","Date","Website"
-"Ethereum 2.0 Upgrade Successfully Implemented","2023-01-15","cointelegraph.com"
-"Major DeFi Platform Announces Migration to Ethereum","2023-02-10","coindesk.com"
-"SEC Announces New Regulations Impacting Cryptocurrencies","2023-03-05","reuters.com"
-"Ethereum Reaches All-Time High Amid Market Surge","2023-04-12","bloomberg.com"
-"Ethereum Network Congestion Causes Transaction Delays","2023-05-22","cnbc.com"
-"Major Security Breach on Ethereum-Based Platform","2023-06-30","theverge.com"
-"Elon Musk Tweets About Ethereum, Causing Price Fluctuations","2023-07-17","twitter.com"
-"Partnership Announced Between Ethereum Foundation and Major Tech Firm","2023-08-25","techcrunch.com"
-"Ethereum Faces Backlash Over Energy Consumption Concerns","2023-09-10","bbc.com"
-"Ethereum's Market Cap Surpasses That of Bitcoin Temporarily","2023-09-30","forbes.com"
+news,date,website
+"Ethereum's Shapella Upgrade Completed Successfully",2023-04-12,https://www.coindesk.com
+"SEC Approves Ethereum Futures ETFs",2023-08-01,https://www.bloomberg.com
+"Major Security Exploit Found in Ethereum Smart Contracts",2023-06-15,https://www.reuters.com
+"Ethereum Developers Announce Delay in Key Update",2023-02-20,https://www.forbes.com
+"Ethereum's Transition to Proof of Stake Nears Completion",2023-03-30,https://www.cnbc.com
+"Major DeFi Platform on Ethereum Suffers Hack",2023-07-10,https://www.theverge.com
+"Ethereum Co-Founder Steps Down from Active Role",2023-05-18,https://www.ft.com
+"EU Introduces New Regulations on Cryptocurrencies",2023-09-05,https://www.euronews.com
+"Ethereum's Market Capitalization Reaches New High",2023-01-25,https://www.marketwatch.com
+"Partnership Announced Between Ethereum and Major Financial Institution",2023-08-22,https://www.wsj.com
 ```

@@ -8,7 +8,7 @@ from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 
 # Load dataset
 
-csv_filename = r"/Users/haipengzhang/Downloads/TreeHack2025/ETH.csv"
+csv_filename = r"../../ETH.csv"
 df = pd.read_csv(csv_filename, usecols=["timestamp", "open", "close"])
 
 # Preprocess data
