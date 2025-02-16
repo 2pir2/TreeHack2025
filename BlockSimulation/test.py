@@ -1,63 +1,67 @@
-import requests
 import time
-import random
+from web3 import Web3
 
-class CryptoTradingSimulator:
-    def __init__(self, starting_balance=1_000_000):
-        self.balance = starting_balance  # Fake USD balance
-        self.portfolio = {}  # Dictionary to store token holdings
-        self.trade_history = []  # Record of all trades
-        self.base_url = "https://api.coingecko.com/api/v3/simple/price"
+# 🔹 Infura API Key (Replace with your own)
+INFURA_API_KEY = "c582b514403f4640a5fafe5d0d1ebc2e"
+INFURA_URL = f"https://sepolia.infura.io/v3/{INFURA_API_KEY}"
 
-    def get_token_price(self, token="ethereum"):
-        """Fetch real-time token price from a testnet-compatible API."""
-        try:
-            response = requests.get(f"{self.base_url}?ids={token}&vs_currencies=usd")
-            data = response.json()
-            return data[token]["usd"]
-        except Exception as e:
-            print(f"Error fetching token price: {e}")
-            return None
+# 🔹 Connect to Sepolia
+w3 = Web3(Web3.HTTPProvider(INFURA_URL))
 
-    def execute_trade(self, model_output, token="ethereum"):
-        """Executes Buy/Sell based on ML model's prediction (-1 = Sell, 1 = Buy, 0 = Hold)."""
-        price = self.get_token_price(token)
-        if not price:
-            print("Skipping trade due to price fetch error.")
-            return
-        
-        action = "Hold"
-        if model_output == 1:  # Buy
-            amount = self.balance * 0.1 / price  # Buy 10% of balance
-            self.balance -= amount * price
-            self.portfolio[token] = self.portfolio.get(token, 0) + amount
-            action = "Buy"
-        elif model_output == -1 and token in self.portfolio:  # Sell
-            amount = self.portfolio[token] * 0.1  # Sell 50% of holdings
-            self.balance += amount * price
-            self.portfolio[token] -= amount
-            action = "Sell"
-        
-        self.trade_history.append({"token": token, "action": action, "price": price, "balance": self.balance})
-        print(f"{action} {token} at ${price:.2f}. New balance: ${self.balance:.2f}")
+if w3.is_connected():
+    print("✅ Connected to Sepolia via Infura")
+else:
+    print("❌ Connection Failed")
+    exit()
 
-    def run_simulation(self, model_predictions):
-        """Runs a simulated trading loop based on ML predictions."""
-        for prediction in model_predictions:
-            self.execute_trade(prediction)
-            time.sleep(2)  # Simulate trade delay
+# 🔹 Wallet Details
+PRIVATE_KEY = "0fcf0b8c984a46d9344f465a9af73d9edeb835e358dfbcf5925591b0a7a43551"  # ⚠️ Never share this
+SENDER_ADDRESS = "0xbcaeb05D15c61E5ABf4dB475D8A459449fcD22df"  # Your Sepolia address
+RECEIVER_ADDRESS = "0x7daf26D64a62e2e1dB838C84bCAc5bdDb3b5D926"  # Another wallet for selling ETH
 
-    def print_portfolio(self):
-        """Prints the current portfolio and balance."""
-        print("\n--- Portfolio Summary ---")
-        print(f"Balance: ${self.balance:.2f}")
-        for token, amount in self.portfolio.items():
-            print(f"{token}: {amount:.4f}")
-        print("-------------------------")
+# 🔹 Read Single Action from File
+def read_action(file_path):
+    try:
+        with open(file_path, "r") as file:
+            action = int(file.read().strip())  # Read the single number
+            return action
+    except Exception as e:
+        print(f"❌ Error reading action file: {e}")
+        return None
 
-# Example Usage
-if __name__ == "__main__":
-    simulator = CryptoTradingSimulator()
-    model_predictions = [1, 0, -1, 1, 1, -1, 0]  # Replace with your real ML model outputs
-    simulator.run_simulation(model_predictions)
-    simulator.print_portfolio()
+# 🔹 Send ETH Transaction
+def send_eth(action):
+    if action == 0:
+        print("🔹 Action: Keep (No transaction made)")
+        return None
+
+    # Define transaction details
+    tx = {
+        'nonce': w3.eth.get_transaction_count(SENDER_ADDRESS),
+        'to': RECEIVER_ADDRESS if action == -1 else SENDER_ADDRESS,  # Sell to recipient, buy = self
+        'value': w3.to_wei(0.01, 'ether'),  # Amount of ETH to send
+        'gas': 21000,
+        'gasPrice': w3.to_wei(20, 'gwei'),
+        'chainId': 11155111  # Sepolia Chain ID
+    }
+
+    # Sign transaction
+    signed_tx = w3.eth.account.sign_transaction(tx, PRIVATE_KEY)
+    
+    # Send transaction
+    tx_hash = w3.eth.send_raw_transaction(signed_tx.raw_transaction)
+    print(f"✅ Transaction Sent! Tx Hash: {w3.to_hex(tx_hash)}")
+
+    return tx_hash
+
+# 🔹 Run the Single Action Execution
+file_path = "action.txt"
+action = read_action(file_path)
+
+if action is not None:
+    if action == 1:
+        print("🟢 Buying ETH...")
+    elif action == -1:
+        print("🔴 Selling ETH...")
+    
+    send_eth(action)
