@@ -62,28 +62,28 @@ export class Agent {
 
       console.log('Generated result:', result);
   
-      // Convert the result to an array of lines
-      let lines = result["content"].split("\n");
+      // // Convert the result to an array of lines
+      // let lines = result["content"].split("\n");
   
-      // Find the actual CSV data start and end indices
-      let startIndex = lines.findIndex(line => line.startsWith("news,date,website"));
-      let endIndex = lines.findIndex(line => line.toLowerCase().includes("this table is purely fictional"));
+      // // Find the actual CSV data start and end indices
+      // let startIndex = lines.findIndex(line => line.startsWith("news,date,website"));
+      // let endIndex = lines.findIndex(line => line.toLowerCase().includes("this table is purely fictional"));
   
-      // Extract only the valid CSV lines
-      if (startIndex !== -1 && endIndex !== -1) {
-          lines = lines.slice(startIndex, endIndex);
-      }
+      // // Extract only the valid CSV lines
+      // if (startIndex !== -1 && endIndex !== -1) {
+      //     lines = lines.slice(startIndex, endIndex);
+      // }
   
-      // Convert the cleaned lines back to a string
-      let cleanedContent = lines.join("\n");
+      // // Convert the cleaned lines back to a string
+      // let cleanedContent = lines.join("\n");
   
-      // Define the file path
-      let filePath = "/Users/hanxu/Desktop/TreeHack/TreeHack2025/Output.csv";
+      // // Define the file path
+      // let filePath = "/Users/hanxu/Desktop/TreeHack/TreeHack2025/Output.csv";
   
-      // Save the cleaned CSV data
-      fs.writeFile(filePath, cleanedContent, (err) => {
-          if (err) throw err;
-      });
+      // // Save the cleaned CSV data
+      // fs.writeFile(filePath, cleanedContent, (err) => {
+      //     if (err) throw err;
+      // });
       
       // Log the generation to EigenDA
       await this.eigenDA.info('Text Generation', {
