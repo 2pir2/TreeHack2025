@@ -4,7 +4,7 @@ import time
 from main import check_do_trx
 
 def p():
-    print("hello")
+    print("Running transactions")
 
 # schedule.every(3).seconds.do(check_do_trx)
 schedule.every(3).seconds.do(p)

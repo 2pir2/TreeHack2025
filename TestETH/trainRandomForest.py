@@ -85,7 +85,7 @@ def fun_process_price(df):
     # Save predictions to CSV
     results_df = pd.DataFrame(
         {
-            # "Timestamp": X_test["timestamp"].values,
+            "Timestamp": X_test["timestamp"].values,
             "Predicted_Close": predicted_close_prices,
             "Actual_Close": y_test.values,
         }
@@ -95,5 +95,6 @@ def fun_process_price(df):
     r2 = r2_score(df_except_last["Actual_Close"], df_except_last["Predicted_Close"])
 
     predicted_result = results_df.iloc[-1]["Predicted_Close"]
+    print("@@@ Predicted Close Price from price data:", predicted_result, "@@@")
     return [predicted_result, r2]
 

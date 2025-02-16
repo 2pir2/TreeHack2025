@@ -39,7 +39,7 @@ from datetime import datetime, timedelta
 # # Save to CSV
 # df.to_csv("ETH_filtered.csv", index=False)
 
-def data_retrieval_price(start_date, end_date):
+def data_retrieval_price(start_date, end_date, time):
     # Initialize Binance exchange
     exchange = ccxt.coinbase()
 
@@ -63,9 +63,9 @@ def data_retrieval_price(start_date, end_date):
     df["timestamp"] = pd.to_datetime(df["timestamp"], unit="ms")
 
     # **Filter Data Between the Specified Date Range**
-    df = df[(df["timestamp"] >= start_date) & (df["timestamp"] <= end_date)]
+    df = df[(df["timestamp"] >= start_date) & (df["timestamp"] <= end_date + " " +time)]
 
     # Select only necessary columns
     df = df[["timestamp", "open", "close"]]
-
+    print(f"@@@ Data retrieval of price data completed from {start_date} to {end_date} @@@")
     return df

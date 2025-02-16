@@ -21,4 +21,5 @@ def data_retrieval_news(start_time, end_time):
 
     # Read the CSV data into a pandas DataFrame
     df = pd.read_csv(csv_data)
+    print(f"@@@ News retrieval completed from {start_time} to {end_time} @@@")
     return df
