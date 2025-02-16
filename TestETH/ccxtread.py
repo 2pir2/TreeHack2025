@@ -3,14 +3,21 @@ import pandas as pd
 from datetime import datetime, timedelta
 
 # Initialize Binance exchange
-exchange = exchange = ccxt.coinbase()
+exchange = ccxt.coinbase()
 
 # Define symbol and timeframe
 symbol = "ETH/USDT"  # ETH price in USDT
 timeframe = "1h"  # 1-hour interval
-since = exchange.parse8601((datetime.utcnow() - timedelta(days=21)).isoformat())  # Past week
 
-# Fetch historical OHLCV (Open, High, Low, Close, Volume) data
+# Define the start and end date (Modify these)
+start_date = "2023-09-20"
+end_date = "2023-10-01"
+
+# Convert to UNIX timestamps
+since = exchange.parse8601(start_date + "T00:00:00Z")  # Start from Sep 20
+until = exchange.parse8601(end_date + "T23:59:59Z")  # End on Oct 1
+
+# Fetch OHLCV data
 ohlcv = exchange.fetch_ohlcv(symbol, timeframe, since=since)
 
 # Convert to DataFrame
@@ -19,9 +26,14 @@ df = pd.DataFrame(ohlcv, columns=["timestamp", "open", "high", "low", "close", "
 # Convert timestamp to human-readable format
 df["timestamp"] = pd.to_datetime(df["timestamp"], unit="ms")
 
+# **Filter Data Between the Specified Date Range**
+df = df[(df["timestamp"] >= start_date) & (df["timestamp"] <= end_date)]
+
 # Select only necessary columns
 df = df[["timestamp", "open", "close"]]
 
-# Print the DataFrame
-print(df)  # Show first 10 rows
-df.to_csv("ETH.csv")
+# Print the filtered DataFrame
+print(df.head())
+
+# Save to CSV
+df.to_csv("ETH_filtered.csv", index=False)

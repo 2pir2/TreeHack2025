@@ -1,6 +1,6 @@
 import pandas as pd
 from sklearn.model_selection import train_test_split
-from trainRandomForest import randomforest
+from TreeHack2025.TestETH.TrainingModels.RandomForest.trainRandomForest import randomforest
 from trainxgboost import xgboost
 
 # Load ETH price data (Only selecting timestamp, open, and close)
