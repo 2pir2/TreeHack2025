@@ -62,7 +62,7 @@ export class Agent {
       // const content = JSON.parse(result)
       console.log('Generated result:', result);
 
-      fs.writeFile('/Users/hanxu/ai-quickstart/Output.json', result["content"], (err) => {
+      fs.writeFile('/Users/hanxu/Desktop/TreeHack/TreeHack2025/Output.csv', result["content"], (err) => {
         if (err) throw err;
       })
       
