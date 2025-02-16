@@ -7,7 +7,8 @@ dist/
 build/
 
 # Environment variables
-.env
+Eigenlayer/.env
+Eigenlayer/.env.example
 .env.local
 .env.*.local
 
