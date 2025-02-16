@@ -1,5 +1,8 @@
 from ccxtread import data_retrieval_price # data retrieval for price data
+from newsread import data_retrieval_news # data retrieval for news
 from test import send_eth, w3connect # deployment
+from trainRandomForest import fun_process_price
+
 import pandas as pd
 import numpy as np
 from datetime import datetime
@@ -15,10 +18,13 @@ def fun_data_price(time):
     df = data_retrieval_price(start_date, date)
     return df
 
-fun_data_news = ''
+def fun_data_news(time):
+    start_time = pd.to_datetime(time) - pd.Timedelta(days=5)
+    start_time = start_time.strftime("%Y-%m-%d %H:%M:%S")
+    df = data_retrieval_news(start_time, time)
+    return df
 
-# data preprocessing function (data format in csv format) => predicted value (float)
-fun_process_price = ''
+# data preprocessing function (data format in csv format) => [predicted value (float), r^2]
 fun_process_news = ''
 
 weight_price = 0.5
@@ -26,7 +32,8 @@ weight_news = 1 - weight_price
 
 # prediction function (time) => predicted value (float)
 def predict(time, w1, w2):
-    price_predicted = fun_process_price(fun_data_price(time))
+    price_predicted = fun_process_price(fun_data_price(time))[0]
+    # return price_predicted
     news_predicted = fun_process_news(fun_data_news(time))
     return w1 * price_predicted + w2 * news_predicted
 
@@ -67,6 +74,8 @@ def check_do_trx():
     do_trx(decision(time))
 
 
+# print(fun_process_price(fun_data_price("2025-01-27 16:00:00")))
+print(decision("2025-02-06 16:00:00"))
 # print(current(time))
 # print(pd.to_datetime(time) - pd.Timedelta(days=10))
 
