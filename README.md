@@ -17,4 +17,6 @@ We are deploying an automated unstoppble verifiable ai agent that helps you mana
 * inside the .env file in the folder, change the open-ai key to your open-ai key and the opacity key to your wallet's private key *
 ```bash
 pnpm run dev
+cd ../TestETH
+python3 main.py
 ```
