@@ -5,10 +5,10 @@ from web3 import Web3
 INFURA_API_KEY = "c582b514403f4640a5fafe5d0d1ebc2e"
 INFURA_URL = f"https://sepolia.infura.io/v3/{INFURA_API_KEY}"
 
+w3 = Web3(Web3.HTTPProvider(INFURA_URL))
 
 def w3connect():
     # 🔹 Connect to Sepolia
-    w3 = Web3(Web3.HTTPProvider(INFURA_URL))
     if w3.is_connected():
         print("✅ Connected to Sepolia via Infura")
     else:

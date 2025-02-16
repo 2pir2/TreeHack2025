@@ -12,7 +12,8 @@ def data_retrieval_news(start_time, end_time):
     response = requests.post(url, json=data)
     response = response.json()["content"] # we are not integrating the proof rn
 
-    start = response.index("csv") + len("csv\n")
+    start = response.index("```")
+    start = response.index("\n", start) + 1
     end = response.index("```", start) 
     csv_data = response[start:end].strip()
     # Use StringIO to convert the string into a file-like object
