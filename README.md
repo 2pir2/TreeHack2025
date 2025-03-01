@@ -1,5 +1,5 @@
 # TreeHack2025 Repository
-
+## This project wins the first place in the Web3 track for The Best AI Agent. WoW!!
 Welcome to the TreeHack2025 Team1 project on web3! This repository contains various tools and models developed during TreeHack 2025 to analyze and predict Ethereum (ETH) prices using machine learning.
 
 ## Introduction
